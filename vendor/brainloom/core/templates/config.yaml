@@ -1,0 +1,39 @@
+# brainloom instance configuration
+# This file belongs to YOUR project. Everything here is per-project; the kit never hardcodes it.
+
+# --- Identity ---------------------------------------------------------------
+# schema_version: version of the brain FORMAT (integer). The kit bumps it only
+#   when the format changes, and ships a migration for each bump.
+# kit_version: kit version installed / last migrated.
+schema_version: 2
+kit_version: 0.3.0
+
+# Language for generated brain files (en, es, ...).
+language: en
+
+# --- Project commands (fill via init-brain or by hand) ----------------------
+commands:
+  test: []           # e.g. ["npm test"]
+  lint: []
+  build: []
+  run: []            # e.g. ["npm start"] — used for functional verification
+
+# --- Anti-monster limits ----------------------------------------------------
+limits:
+  max_diff_lines: 300  # beyond this: stop, report, propose a split
+  max_files: 8
+
+# --- Agents -----------------------------------------------------------------
+max_parallel_agents: 1  # subagents run sequentially unless raised
+
+# Model levels -> concrete model ids from YOUR provider. Never shipped by the kit.
+# Example: strong: "yourprovider/your-strongest-model"
+models:
+  strong: ""
+  balanced: ""
+  fast: ""
+
+# --- Update check (opt-out, no telemetry, offline-tolerant) ------------------
+update_check:
+  enabled: true
+  remote_url: ""     # git URL of your brainloom clone/fork

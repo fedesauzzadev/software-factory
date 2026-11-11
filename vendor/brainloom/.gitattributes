@@ -1,0 +1,2 @@
+# Normalize to LF in the repo; checkouts follow core.autocrlf per platform.
+* text=auto eol=lf

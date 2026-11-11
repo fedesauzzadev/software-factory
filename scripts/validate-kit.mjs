@@ -23,6 +23,16 @@ const required = [
 ];
 const agents = ["po", "tech-lead", "ux", "scrum-master", "designer", "dev", "qa"];
 required.push(...agents.map(a => `agents/factory/${a}.md`));
+// brainloom vendored (memoria de la fábrica)
+required.push(
+  "vendor/brainloom/VERSION", "vendor/brainloom/LICENSE",
+  "vendor/brainloom/adapters/opencode/install.mjs",
+  "vendor/brainloom/scripts/validate-brain.mjs",
+  "vendor/brainloom/core/skills/init-brain/SKILL.md",
+  "vendor/brainloom/core/skills/triage/SKILL.md",
+  "vendor/brainloom/core/skills/memory-update/SKILL.md",
+  "vendor/brainloom/core/skills/kit-update/SKILL.md",
+);
 
 console.log("Archivos requeridos:");
 for (const f of required) existsSync(join(root, f)) ? ok(f) : bad(`FALTA: ${f}`);

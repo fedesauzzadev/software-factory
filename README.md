@@ -17,7 +17,7 @@ Fábrica de software ágil autónoma para OpenCode, construida sobre [brainloom]
 | Agent `factory/scrum-master` | Dueño del ritmo: board de sprints vivo (`factory/sprints.md`), desvíos, agenda de gates |
 | Agent `factory/dev` | Construye slices end-to-end con tests y evidencia real de verificación |
 | Agent `factory/qa` | Adversarial: tests, seguridad, resiliencia, performance, DoD vendible |
-| Backbone brainloom | `brain/` del proyecto: nodos, decisiones (ADRs), evidencia, aprendizajes persistentes |
+| **brainloom incluido** (`vendor/brainloom/`) | `brain/` del proyecto: nodos, decisiones (ADRs), evidencia, aprendizajes persistentes — se instala junto con la fábrica |
 
 ## Instalar
 
@@ -41,7 +41,7 @@ cd software-factory
 ./install.sh          # Windows: .\install.ps1   (aceptan -Target/--target para probar en otra carpeta)
 ```
 
-Instala la skill `software-factory`, los agents `factory/*` y el comando `/factory` en `~/.config/opencode/`. Desinstalar: `uninstall.ps1` / `uninstall.sh`. Requisito: brainloom instalado (es la memoria de la fábrica).
+Instala la skill `software-factory`, los agents `factory/*`, el comando `/factory` **y brainloom** (memoria de la fábrica, vendido en `vendor/brainloom/`) en `~/.config/opencode/`. Desinstalar: `uninstall.ps1` / `uninstall.sh` (remueve solo la fábrica; brainloom queda, es infra compartida). Requisito único: **node** en PATH (para brainloom).
 
 ## Usar
 
@@ -80,6 +80,7 @@ El kit está pensado para evolucionar. Reglas del crecimiento:
 3. **Nueva vista visual** → template en `templates/` + sus marcadores documentados en `references/dashboard.md`.
 4. **Aprender de una corrida** → los aprendizajes genéricos de `factory/learnings.md` de cada proyecto se proponen como cambios al kit (retro): si el Negocio los aprueba, entran acá y toda fábrica futura mejora.
 5. **Cambios** → corré `node scripts/validate-kit.mjs` antes de pushear (la CI de GitHub lo verifica en Ubuntu y Windows junto a install/uninstall). Subí `VERSION` + entrada en `CHANGELOG.md`.
+6. **Actualizar brainloom** → reemplazá el contenido de `vendor/brainloom/` por la nueva versión del kit (MIT), subí `VERSION` + CHANGELOG, y re-ejecutá el instalador (es idempotente; si hay colisiones con tu copia local, decidí vos con `--force`).
 
 Estructura del repo:
 
@@ -92,6 +93,7 @@ software-factory/
 │   ├── SKILL.md
 │   ├── references/                            # workflow, security, dashboard
 │   └── templates/                             # dashboard.html, office.html
+├── vendor/brainloom/                          # memoria de la fábrica (MIT) — se instala junto
 ├── scripts/validate-kit.mjs                   # integridad (local + CI)
 └── .github/workflows/ci.yml                   # CI: valida + instala + desinstala (ubuntu/windows)
 ```

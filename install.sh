@@ -27,5 +27,13 @@ cp -r "$SRC/skills/software-factory" "$TARGET/skills/software-factory"
 cp "$SRC"/agents/factory/*.md "$TARGET/agents/factory/"
 cp "$SRC/commands/factory.md" "$TARGET/commands/"
 
-echo "OK: skill 'software-factory' + agents factory/* + comando /factory instalados en $TARGET"
-echo "Nota: la fábrica usa brainloom (skills init-brain/triage/memory-update). Sin brainloom no hay memoria."
+# brainloom (vendored) — memoria de la fábrica
+if command -v node >/dev/null 2>&1; then
+  if ! node "$SRC/vendor/brainloom/adapters/opencode/install.mjs" --config-dir "$TARGET"; then
+    echo "NOTA: brainloom reportó colisiones (hay una versión distinta instalada). No se sobreescribió nada; se usa la existente."
+  fi
+else
+  echo "AVISO: node no está en PATH — brainloom (memoria de la fábrica) NO se instaló. Instalalo y re-ejecuta."
+fi
+
+echo "OK: skill 'software-factory' + agents factory/* + comando /factory + brainloom instalados en $TARGET"

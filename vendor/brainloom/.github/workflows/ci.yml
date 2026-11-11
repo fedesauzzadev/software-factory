@@ -1,0 +1,26 @@
+name: ci
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+
+jobs:
+  scripts:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: syntax check
+        run: node --check scripts/check-update.mjs && node --check scripts/validate-brain.mjs && node --check scripts/migrate.mjs
+      - name: validate sample brain
+        run: node scripts/validate-brain.mjs tests/fixtures/sample-project/brain
+      - name: migration dry-run
+        run: node scripts/migrate.mjs tests/fixtures/sample-project/brain --migrations-dir tests/fixtures/migrations
+      - name: update check is offline-tolerant
+        run: node scripts/check-update.mjs --kit .
