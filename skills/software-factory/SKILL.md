@@ -22,11 +22,16 @@ El usuario es el **NEGOCIO**. Vos sos la **FÁBRICA**: PO, Tech Lead, Devs y QA 
 3. Creá `factory/`.
 4. **Abrí la oficina YA**: generá `factory/office.html` y `factory/dashboard.html` (estado inicial: intake registrado, PO por arrancar, planning "— pendiente —") y mostralas al Negocio con browser.preview. La oficina se re-genera y se re-abre tras CADA evento de la corrida (fin de fase, slice, ronda de QA, gate): el Negocio mira el trabajo en curso mientras la fábrica labura.
 
-## Fase 1 — PO (subagent `factory/po`)
-Pasale intake + contexto. PO produce `factory/spec.md`, `factory/backlog.md` (corte MVP ≤ 4 historias), `factory/roadmap.md` (V0/V1/V2) y nodos brain `N-XXXX` planned con AC.
+## Fase 0.5 — Especialización (división)
+Clasificá el dominio del requerimiento según `references/divisions.md` leyendo la sección Detección de cada playbook en `divisions/`. Si hay match:
+1. El playbook es **vinculante**: gates y DoD de dominio se suman al core; QA los fiscaliza para el SHIP.
+2. Inyectá en cada prompt de subagent la línea `Cargá las skills: <las del mapa de la división para su rol>` — los especialistas son las skills ya instaladas en el entorno.
+3. Roles extra declarados por la división (si existe su `agents/factory/<rol>.md`) entran al flujo donde el playbook diga; la oficina los muestra como puesto.
+4. Mostrá la división activa en oficina/dashboard (`{{DIVISION}}`).
+Sin match claro → fábrica genérica, core tal cual. No fuerces división.
 
 ## Fase 1 — PO (subagent `factory/po`)
-Pasale intake + contexto. PO produce `factory/spec.md`, `factory/backlog.md` (corte MVP ≤ 4 historias), `factory/roadmap.md` (V0/V1/V2) y nodos brain `N-XXXX` planned con AC.
+Pasale intake + contexto (y el playbook de la división si hay). PO produce `factory/spec.md`, `factory/backlog.md` (corte MVP ≤ 4 historias), `factory/roadmap.md` (V0/V1/V2), artefactos de dominio del playbook (ej: GDD-lite en GameDev) y nodos brain `N-XXXX` planned con AC.
 
 ## Fase 1.5 — UX (subagent `factory/ux`) — SOLO si el producto tiene interfaz
 User flows + wireframes low-fi + AC de usabilidad/accesibilidad que se agregan a los nodos. Producto sin UI (API/CLI/lib) → saltás esta fase.
@@ -59,4 +64,4 @@ Pedile al Scrum Master (subagent `factory/scrum-master`) la agenda de la gate: q
 **No continúes sin aprobación explícita.** Con approval: memory-update (skill), `factory/scorecard.md`, siguiente slice → Fase 3. Sin approval: ajustá lo pedido y repetí QA + dashboard.
 
 ## Handoff a subagents
-Cada subagent arranca con contexto limpio: pasale SIEMPRE ruta del proyecto + archivos de entrada exactos + su carta de rol está en su propio agent. Verbalizá poco, entregá archivos.
+Cada subagent arranca con contexto limpio: pasale SIEMPRE ruta del proyecto + archivos de entrada exactos + su carta de rol está en su propio agent. Si hay división activa: pasale el playbook (`divisions/<dominio>.md`) y las skills a cargar según su mapa. Verbalizá poco, entregá archivos.

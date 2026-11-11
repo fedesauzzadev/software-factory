@@ -2,6 +2,15 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/) · Versionado: [semver](https://semver.org/).
 
+## [0.3.0] — 2026-11-10
+
+### Added
+- **Divisiones**: la fábrica se especializa por dominio en Fase 0.5. Playbook vinculante (`divisions/<dominio>.md`): ajusta equipo, mapa de skills a cargar por rol, gates y DoD de dominio, artefactos extra. Sin match → fábrica genérica.
+- División **GameDev**: equipo + 🎨 Game Artist (`agents/factory/artist.md`), mapa a las skills de juego instaladas (router, engine packs, game-feel, level-design, VFX/shaders, audio, export/publish), gates de playtest/feel/frame-budget/export, GDD-lite y art-bible-lite.
+- División **CRM/Businesstech**: lente comercial del PO, modelo de entidades de referencia, gates de RBAC real/round-trip CSV/audit log/rendimiento con 10k contactos, domain-model.md del TL.
+- `references/divisions.md`: formato para escribir divisiones nuevas (el kit crece por dominios).
+- Oficina: chip de división activa (`{{DIVISION}}`).
+
 ## [0.2.0] — 2026-11-10
 
 ### Added

@@ -15,13 +15,14 @@ const required = [
   "skills/software-factory/references/workflow.md",
   "skills/software-factory/references/security.md",
   "skills/software-factory/references/dashboard.md",
+  "skills/software-factory/references/divisions.md",
   "skills/software-factory/templates/dashboard.html",
   "skills/software-factory/templates/office.html",
   "commands/factory.md",
   "README.md", "CHANGELOG.md", "VERSION", "LICENSE",
   "install.sh", "uninstall.sh", "install.ps1", "uninstall.ps1",
 ];
-const agents = ["po", "tech-lead", "ux", "scrum-master", "designer", "dev", "qa"];
+const agents = ["po", "tech-lead", "ux", "scrum-master", "designer", "dev", "qa", "artist"];
 required.push(...agents.map(a => `agents/factory/${a}.md`));
 // brainloom vendored (memoria de la fábrica)
 required.push(
@@ -65,6 +66,17 @@ for (const m of unique) {
   inDash || inOffice ? ok(`{{${m}}} presente en template`) : bad(`{{${m}}} documentado pero ausente en templates`);
 }
 if (!unique.length) bad("dashboard.md no documenta marcadores");
+
+// Divisiones: cada playbook debe tener las secciones del formato de references/divisions.md
+console.log("Divisiones:");
+for (const d of ["gamedev", "crm"]) {
+  const p = `skills/software-factory/divisions/${d}.md`;
+  if (!existsSync(join(root, p))) { bad(`FALTA: ${p}`); continue; }
+  const t = readFileSync(join(root, p), "utf8");
+  for (const sec of ["## Detección", "## Ajustes de equipo", "## Gates de dominio", "## DoD de dominio", "## Artefactos de dominio"]) {
+    t.includes(sec) ? ok(`${d}: ${sec.replace("## ", "")}`) : bad(`${d}: sin sección ${sec}`);
+  }
+}
 
 // 5. Comando /factory
 console.log("Comando:");

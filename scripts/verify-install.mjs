@@ -19,7 +19,7 @@ const factoryFiles = [
   "commands/factory.md",
   "agents/factory/po.md", "agents/factory/tech-lead.md", "agents/factory/ux.md",
   "agents/factory/scrum-master.md", "agents/factory/designer.md",
-  "agents/factory/dev.md", "agents/factory/qa.md",
+  "agents/factory/dev.md", "agents/factory/qa.md", "agents/factory/artist.md",
 ];
 const brainloomFiles = [
   "skills/init-brain/SKILL.md", "skills/triage/SKILL.md",

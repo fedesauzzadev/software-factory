@@ -17,6 +17,8 @@ Fábrica de software ágil autónoma para OpenCode, construida sobre [brainloom]
 | Agent `factory/scrum-master` | Dueño del ritmo: board de sprints vivo (`factory/sprints.md`), desvíos, agenda de gates |
 | Agent `factory/dev` | Construye slices end-to-end con tests y evidencia real de verificación |
 | Agent `factory/qa` | Adversarial: tests, seguridad, resiliencia, performance, DoD vendible |
+| Agent `factory/artist` | Game Artist (División GameDev): VFX, personajes, ambientes, shaders, art-bible |
+| **Divisiones** (`divisions/`) | Especialización por dominio: GameDev y CRM/Businesstech listas; formato abierto para crear más |
 | **brainloom incluido** (`vendor/brainloom/`) | `brain/` del proyecto: nodos, decisiones (ADRs), evidencia, aprendizajes persistentes — se instala junto con la fábrica |
 
 ## Instalar
@@ -49,7 +51,11 @@ El Negocio le habla a la fábrica con un comando:
 
 ```
 /factory Necesito una API que genere facturas PDF desde JSON, en Node, vendible a contadores
+/factory Un juego 2D de plataformas en Godot con VFX y dos niveles, para itch.io
+/factory Un CRM ligero para mi equipo de ventas con pipeline e importación de contactos
 ```
+
+Al arrancar, la fábrica **detecta el dominio y se especializa** (Fase 0.5): un requerimiento de juego activa la División GameDev (Game Artist, skills de engine/VFX/feel, gates de playtest); un CRM activa la división CRM (gates de permisos, round-trip CSV, audit log). Sin dominio claro, fábrica genérica.
 
 Eso carga la skill `software-factory` y arranca la corrida completa en el directorio actual (o el que digas). Sin argumentos — `/factory` — entra en **modo estado**: regenera la oficina y el dashboard del proyecto actual con el avance del momento (fase, nodos, hallazgos, gates pendientes).
 

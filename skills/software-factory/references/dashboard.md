@@ -29,6 +29,7 @@ Vista de piso de fábrica: un puesto por agente, qué hace ahora y el historial 
 |---|---|---|
 | `{{PROJECT_NAME}}` | Nombre del producto | factory/spec.md |
 | `{{GENERATED_AT}}` | Fecha/hora de regeneración | now |
+| `{{DIVISION}}` | División activa (ej: "División GameDev · engine: Godot") o "Fábrica genérica" | divisions/ + Fase 0.5 |
 | `{{FACTORY_STATE}}` | Fase actual + gate (ej: "Fase 4 — QA adversarial · próximo: review gate con el Negocio") | workflow |
 | `{{SPRINT_STRIP}}` | Chips de sprints en línea: `S01 ✅ · S02 🔨 en curso · S03 🗓️` (clases `.ok` verificado, `.on` en curso, neutro planificado) | factory/sprints.md |
 | `{{BOARD}}` | Kanban visual: 5 columnas `.bcol` (Backlog · Planificado · En curso · Verificado · Entregado) con notas `.note` (clase por estado: `.n-plan`, `.n-busy`, `.n-impl`, `.n-ver`, `.n-ship`): `<span class="nid">N-XXXX · H-XX</span> título <small>slice/nota</small>`. Una nota por nodo/historia, en la columna de su estado real del brain. Sin datos: columna vacía con "—" | factory/sprints.md + brain/nodes |
