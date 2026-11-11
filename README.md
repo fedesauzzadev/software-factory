@@ -18,7 +18,7 @@ Fábrica de software ágil autónoma para OpenCode, construida sobre [brainloom]
 | Agent `factory/dev` | Construye slices end-to-end con tests y evidencia real de verificación |
 | Agent `factory/qa` | Adversarial: tests, seguridad, resiliencia, performance, DoD vendible |
 | Agent `factory/artist` | Game Artist (División GameDev): VFX, personajes, ambientes, shaders, art-bible |
-| **Divisiones** (`divisions/`) | Especialización por dominio: GameDev y CRM/Businesstech listas; formato abierto para crear más |
+| **Divisiones** (`divisions/`) | Especialización automática por dominio: caché de playbooks probados (gamedev, crm de ejemplo) + síntesis al vuelo para cualquier dominio + promoción de lo que rinde |
 | **brainloom incluido** (`vendor/brainloom/`) | `brain/` del proyecto: nodos, decisiones (ADRs), evidencia, aprendizajes persistentes — se instala junto con la fábrica |
 
 ## Instalar
@@ -55,7 +55,7 @@ El Negocio le habla a la fábrica con un comando:
 /factory Un CRM ligero para mi equipo de ventas con pipeline e importación de contactos
 ```
 
-Al arrancar, la fábrica **detecta el dominio y se especializa** (Fase 0.5): un requerimiento de juego activa la División GameDev (Game Artist, skills de engine/VFX/feel, gates de playtest); un CRM activa la división CRM (gates de permisos, round-trip CSV, audit log). Sin dominio claro, fábrica genérica.
+Al arrancar, la fábrica **detecta el dominio y se especializa sola** (Fase 0.5): usa un playbook cacheado si existe (`gamedev` y `crm` vienen como ejemplos precocinados) o **sintetiza uno nuevo para tu dominio** — fintech, salud, e-commerce, lo que sea — a partir del conocimiento del dominio, las skills realmente disponibles en el entorno y los gates/DoD que ese dominio exige. Las divisiones sintetizadas que rinden se promueven al kit con tu approval: la fábrica aprende dominios reales, no listas hardcodeadas. Sin dominio identificable, fábrica genérica.
 
 Eso carga la skill `software-factory` y arranca la corrida completa en el directorio actual (o el que digas). Sin argumentos — `/factory` — entra en **modo estado**: regenera la oficina y el dashboard del proyecto actual con el avance del momento (fase, nodos, hallazgos, gates pendientes).
 

@@ -22,13 +22,13 @@ El usuario es el **NEGOCIO**. Vos sos la **FÁBRICA**: PO, Tech Lead, Devs y QA 
 3. Creá `factory/`.
 4. **Abrí la oficina YA**: generá `factory/office.html` y `factory/dashboard.html` (estado inicial: intake registrado, PO por arrancar, planning "— pendiente —") y mostralas al Negocio con browser.preview. La oficina se re-genera y se re-abre tras CADA evento de la corrida (fin de fase, slice, ronda de QA, gate): el Negocio mira el trabajo en curso mientras la fábrica labura.
 
-## Fase 0.5 — Especialización (división)
-Clasificá el dominio del requerimiento según `references/divisions.md` leyendo la sección Detección de cada playbook en `divisions/`. Si hay match:
-1. El playbook es **vinculante**: gates y DoD de dominio se suman al core; QA los fiscaliza para el SHIP.
-2. Inyectá en cada prompt de subagent la línea `Cargá las skills: <las del mapa de la división para su rol>` — los especialistas son las skills ya instaladas en el entorno.
-3. Roles extra declarados por la división (si existe su `agents/factory/<rol>.md`) entran al flujo donde el playbook diga; la oficina los muestra como puesto.
-4. Mostrá la división activa en oficina/dashboard (`{{DIVISION}}`).
-Sin match claro → fábrica genérica, core tal cual. No fuerces división.
+## Fase 0.5 — Especialización automática (división)
+Identificá el dominio del requerimiento (o su ausencia). Después:
+1. **Caché**: si `divisions/<dominio>.md` existe en el kit, usala y ADAPTALA — verificá su mapa contra las skills realmente disponibles en el entorno y ajustá gates/DoD al intake concreto.
+2. **Síntesis** (dominio identificable sin caché): generá `factory/division.md` EN EL PROYECTO siguiendo `references/divisions.md` — conocimiento del dominio + mapa SOLO de skills que existan en el entorno + gates/DoD/artefactos que ese dominio exige.
+3. Playbook vinculante (cualquiera de los dos): skills inyectadas por prompt a cada rol, roles extra si su `agents/factory/<rol>.md` existe, gates/DoD se suman al core, artefactos de dominio, `{{DIVISION}}` en las vistas.
+4. Dominio no identificable → core sin playbook. No fuerces división.
+Al llegar a SHIP con una división sintetizada que rindió: proponé en la gate promoverla al kit (`divisions/`) — la fábrica aprende dominios.
 
 ## Fase 1 — PO (subagent `factory/po`)
 Pasale intake + contexto (y el playbook de la división si hay). PO produce `factory/spec.md`, `factory/backlog.md` (corte MVP ≤ 4 historias), `factory/roadmap.md` (V0/V1/V2), artefactos de dominio del playbook (ej: GDD-lite en GameDev) y nodos brain `N-XXXX` planned con AC.

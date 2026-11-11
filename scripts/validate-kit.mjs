@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Valida la integridad del kit NSDD Software Factory. CI y uso local.
 // Uso: node scripts/validate-kit.mjs
-import { readFileSync, existsSync } from "node:fs";
+import { readFileSync, existsSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 
 const root = join(import.meta.dirname, "..");
@@ -67,14 +67,16 @@ for (const m of unique) {
 }
 if (!unique.length) bad("dashboard.md no documenta marcadores");
 
-// Divisiones: cada playbook debe tener las secciones del formato de references/divisions.md
-console.log("Divisiones:");
-for (const d of ["gamedev", "crm"]) {
-  const p = `skills/software-factory/divisions/${d}.md`;
-  if (!existsSync(join(root, p))) { bad(`FALTA: ${p}`); continue; }
-  const t = readFileSync(join(root, p), "utf8");
+// Divisiones: cada playbook presente en divisions/ (caché) debe tener las secciones del formato.
+// La mecánica es síntesis automática; los playbooks del repo son caché/ejemplo, ninguno obligatorio.
+console.log("Divisiones (caché — opcionales, formato obligatorio):");
+const divDir = join(root, "skills/software-factory/divisions");
+const divisionFiles = existsSync(divDir) ? readdirSync(divDir).filter(f => f.endsWith(".md")) : [];
+if (!divisionFiles.length) console.log("  (sin caché — la fábrica sintetiza por requerimiento)");
+for (const f of divisionFiles) {
+  const t = readFileSync(join(divDir, f), "utf8");
   for (const sec of ["## Detección", "## Ajustes de equipo", "## Gates de dominio", "## DoD de dominio", "## Artefactos de dominio"]) {
-    t.includes(sec) ? ok(`${d}: ${sec.replace("## ", "")}`) : bad(`${d}: sin sección ${sec}`);
+    t.includes(sec) ? ok(`${f}: ${sec.replace("## ", "")}`) : bad(`${f}: sin sección ${sec}`);
   }
 }
 

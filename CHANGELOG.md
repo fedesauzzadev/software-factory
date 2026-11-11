@@ -2,6 +2,12 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/) · Versionado: [semver](https://semver.org/).
 
+## [0.4.0] — 2026-11-11
+
+### Changed
+- **Divisiones automáticas**: la especialización ya no depende de playbooks predefinidos. Fase 0.5 = caché (si `divisions/<dominio>.md` existe, se usa y se adapta al entorno/intake) **o síntesis**: el orquestador genera `factory/division.md` en el proyecto para cualquier dominio, anclado al inventario real de skills del entorno y a gates/DoD del dominio. `gamedev` y `crm` quedan como caché/ejemplo, ninguno obligatorio (la CI valida formato de los presentes, no presencia).
+- **Promoción**: una división sintetizada que llega a SHIP se propone en la review gate para entrar al kit — la fábrica aprende dominios reales.
+
 ## [0.3.0] — 2026-11-10
 
 ### Added
