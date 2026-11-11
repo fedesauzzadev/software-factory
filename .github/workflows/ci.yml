@@ -1,0 +1,47 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  validate-and-install:
+    name: ${{ matrix.os }} — kit íntegro + instaladores
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Validar integridad del kit
+        run: node scripts/validate-kit.mjs
+
+      - name: Instalar en target de prueba (bash)
+        if: runner.os != 'Windows'
+        run: bash install.sh --target "$RUNNER_TEMP/cfg"
+
+      - name: Instalar en target de prueba (PowerShell)
+        if: runner.os == 'Windows'
+        run: powershell -ExecutionPolicy Bypass -File install.ps1 -Target "$env:RUNNER_TEMP\cfg"
+
+      - name: Verificar layout instalado
+        run: node scripts/verify-install.mjs "${{ runner.temp }}/cfg"
+
+      - name: Desinstalar (bash)
+        if: runner.os != 'Windows'
+        run: bash uninstall.sh --target "$RUNNER_TEMP/cfg"
+
+      - name: Desinstalar (PowerShell)
+        if: runner.os == 'Windows'
+        run: powershell -ExecutionPolicy Bypass -File uninstall.ps1 -Target "$env:RUNNER_TEMP\cfg"
+
+      - name: Verificar desinstalación limpia
+        run: node scripts/verify-install.mjs "${{ runner.temp }}/cfg" --removed

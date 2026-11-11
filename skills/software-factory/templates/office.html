@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🏭 Oficina — {{PROJECT_NAME}}</title>
+<style>
+  :root{--bg:#0f1117;--card:#181b24;--line:#262b38;--tx:#e8eaf0;--mut:#8b93a7;--acc:#5b8cff;--ok:#3fb96a;--warn:#e0a93e;--bad:#e05c5c;}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--tx);font:14px/1.5 system-ui,sans-serif;padding:24px}
+  header{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:8px;margin-bottom:6px}
+  h1{font-size:20px} .sub{color:var(--mut);font-size:12px}
+  .banner{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin:10px 0 18px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+  .banner b{color:var(--acc)}
+  .floor{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px;margin-bottom:20px}
+  .desk{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;position:relative;min-height:150px}
+  .desk.busy{border-color:var(--warn);box-shadow:0 0 14px rgba(224,169,62,.12)}
+  .desk.done{border-color:var(--ok)}
+  .desk.waiting{border-color:var(--acc);box-shadow:0 0 14px rgba(91,140,255,.15)}
+  .avatar{font-size:34px;float:left;margin-right:10px}
+  .desk h3{font-size:14px} .desk .role{color:var(--mut);font-size:11px;text-transform:uppercase;letter-spacing:.5px}
+  .desk .task{clear:both;padding-top:8px;font-size:13px}
+  .bubble{margin-top:8px;background:#10131c;border:1px solid var(--line);border-radius:0 10px 10px 10px;padding:8px 10px;font-size:12.5px;color:var(--tx);min-height:38px}
+  .chip{display:inline-block;padding:2px 9px;border-radius:99px;font-size:11px;margin:6px 4px 0 0;border:1px solid var(--line);color:var(--mut)}
+  .st-busy{color:var(--warn);border-color:var(--warn)} .st-done{color:var(--ok);border-color:var(--ok)}
+  .st-waiting{color:var(--acc);border-color:var(--acc)} .st-idle{color:var(--mut)}
+  .pulse{animation:p 1.6s infinite} @keyframes p{50%{opacity:.45}}
+  h2{font-size:15px;color:var(--acc);margin-bottom:10px}
+  .feed{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:6px 0}
+  .feed div{padding:7px 14px;border-bottom:1px solid var(--line);font-size:13px;display:flex;gap:10px}
+  .feed div:last-child{border-bottom:none}
+  .feed time{color:var(--mut);font-size:11px;min-width:110px;font-family:monospace}
+  .feed .who{color:var(--acc);min-width:110px;font-weight:600}
+  a{color:var(--acc)}
+  /* Board de planning */
+  .board{display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:10px;margin-bottom:12px}
+  .bcol{background:#12151f;border:1px solid var(--line);border-radius:10px;padding:10px;min-height:130px}
+  .bcol h4{font-size:11px;color:var(--mut);margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px}
+  .note{background:#1e2433;border-left:3px solid var(--mut);border-radius:6px;padding:8px 10px;margin-bottom:8px;font-size:12.5px;color:var(--tx)}
+  .note .nid{color:var(--acc);font-family:monospace;font-size:10.5px;display:block}
+  .note.n-plan{border-left-color:var(--mut)} .note.n-busy{border-left-color:var(--warn)}
+  .note.n-impl{border-left-color:var(--acc)} .note.n-ver{border-left-color:var(--ok)}
+  .note.n-ship{border-left-color:var(--ok);background:#15241c}
+  .note small{color:var(--mut)}
+  .sprint-strip{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;align-items:center}
+  .sprint-chip{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:6px 12px;font-size:12px;color:var(--mut)}
+  .sprint-chip.on{border-color:var(--warn);color:var(--tx)} .sprint-chip.ok{border-color:var(--ok);color:var(--ok)}
+  .sprint-chip b{color:var(--tx)}
+</style>
+</head>
+<body>
+<header>
+  <h1>🏭 Oficina de la fábrica — {{PROJECT_NAME}}</h1>
+  <span class="sub">NSDD Software Factory · {{GENERATED_AT}}</span>
+</header>
+
+<div class="banner">📍 <b>{{FACTORY_STATE}}</b></div>
+
+<h2>Planning — board de sprints</h2>
+<div class="sprint-strip">{{SPRINT_STRIP}}</div>
+<div class="board">
+{{BOARD}}
+</div>
+
+<div class="floor">
+{{AGENTS}}
+</div>
+
+<h2>Actividad del día</h2>
+<div class="feed">
+{{FEED}}
+</div>
+
+<p class="sub" style="margin-top:14px">Reporte detallado: <a href="dashboard.html">dashboard del proyecto</a> · Esta vista se regenera tras cada evento de la corrida (fase, slice, ronda de QA, gate) y se reabre en el panel de Review.</p>
+</body>
+</html>

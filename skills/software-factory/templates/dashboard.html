@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NSDD Software Factory — {{PROJECT_NAME}}</title>
+<style>
+  :root{--bg:#0f1117;--card:#181b24;--line:#262b38;--tx:#e8eaf0;--mut:#8b93a7;--acc:#5b8cff;--ok:#3fb96a;--warn:#e0a93e;--bad:#e05c5c;}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--tx);font:14px/1.5 system-ui,sans-serif;padding:24px}
+  header{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+  h1{font-size:20px} h2{font-size:15px;margin-bottom:10px;color:var(--acc)}
+  .sub{color:var(--mut);font-size:12px}
+  nav{display:flex;gap:6px;margin-bottom:18px;flex-wrap:wrap}
+  nav button{background:var(--card);border:1px solid var(--line);color:var(--mut);padding:7px 14px;border-radius:8px;cursor:pointer;font-size:13px}
+  nav button.on{color:var(--tx);border-color:var(--acc);background:#1c2436}
+  section{display:none} section.on{display:block}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px}
+  .card h3{font-size:13px;margin-bottom:6px}
+  .card p,.card li{font-size:13px;color:var(--mut)}
+  ul{padding-left:18px} .li-ok{color:var(--tx)}
+  .chip{display:inline-block;padding:2px 9px;border-radius:99px;font-size:11px;margin:2px 4px 2px 0;border:1px solid var(--line);color:var(--mut)}
+  .st-planned{color:var(--mut)} .st-inprogress{color:var(--warn);border-color:var(--warn)}
+  .st-implemented{color:var(--acc);border-color:var(--acc)} .st-verified{color:var(--ok);border-color:var(--ok)}
+  .st-ship{color:var(--ok);border-color:var(--ok);font-weight:600} .st-noship{color:var(--bad);border-color:var(--bad);font-weight:600}
+  .timeline{border-left:2px solid var(--line);margin-left:8px;padding-left:18px;display:grid;gap:14px}
+  .tl-item{position:relative} .tl-item:before{content:"";position:absolute;left:-24px;top:5px;width:10px;height:10px;border-radius:50%;background:var(--acc)}
+  .tl-item.done:before{background:var(--ok)}
+  .kpi{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+  .kpi .card{min-width:150px;text-align:center}
+  .kpi b{display:block;font-size:22px;color:var(--tx)}
+  .kbd{background:#0d0f14;border:1px solid var(--line);border-radius:6px;padding:1px 7px;font-family:monospace;font-size:12px;color:var(--ok)}
+  .empty{color:var(--mut);font-style:italic}
+</style>
+</head>
+<body>
+<header>
+  <h1>🏭 {{PROJECT_NAME}}</h1>
+  <span class="sub">NSDD Software Factory · actualizado {{GENERATED_AT}}</span>
+</header>
+<nav>
+  <button class="on" data-t="mvp">MVP</button>
+  <button data-t="kanban">Kanban</button>
+  <button data-t="roadmap">Roadmap</button>
+  <button data-t="quality">Calidad</button>
+  <button data-t="learn">Bloqueos y aprendizajes</button>
+  <button data-t="decisions">Decisiones</button>
+</nav>
+
+<section id="mvp" class="on">
+  <h2>Entregable MVP</h2>
+  <div class="card"><ul>{{MVP_INFO}}</ul></div>
+</section>
+
+<section id="kanban">
+  <h2>Historias y estado</h2>
+  <div class="grid">{{KANBAN_CARDS}}</div>
+</section>
+
+<section id="roadmap">
+  <h2>Entregas de valor</h2>
+  <div class="timeline">{{ROADMAP_ITEMS}}</div>
+</section>
+
+<section id="quality">
+  <h2>Verificación y QA</h2>
+  <div class="kpi">{{QUALITY_SUMMARY}}</div>
+</section>
+
+<section id="learn">
+  <h2>Bloqueos y aprendizajes</h2>
+  <div class="grid">{{LEARNINGS}}</div>
+</section>
+
+<section id="decisions">
+  <h2>Decisiones (ADRs)</h2>
+  <div class="grid">{{DECISIONS}}</div>
+</section>
+
+<script>
+  document.querySelectorAll('nav button').forEach(b=>b.addEventListener('click',()=>{
+    document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('on',x===b));
+    document.querySelectorAll('section').forEach(s=>s.classList.toggle('on',s.id===b.dataset.t));
+  }));
+</script>
+</body>
+</html>
