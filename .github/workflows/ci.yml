@@ -24,6 +24,9 @@ jobs:
       - name: Validar integridad del kit
         run: node scripts/validate-kit.mjs
 
+      - name: Smoke - division sintetizada (Fase 0.5)
+        run: node scripts/check-division.mjs tests/fixtures/smoke-fintech/factory/division.md
+
       - name: Instalar en target de prueba (bash)
         if: runner.os != 'Windows'
         run: bash install.sh --target "$RUNNER_TEMP/cfg"
