@@ -1,0 +1,28 @@
+# brainloom instance configuration
+# This file belongs to YOUR project. Everything here is per-project; the kit never hardcodes it.
+
+schema_version: 1
+kit_version: 0.1.0
+
+language: en
+
+commands:
+  test: ["node app.js"]
+  lint: []
+  build: []
+  run: ["node app.js"]
+
+limits:
+  max_diff_lines: 300
+  max_files: 8
+
+max_parallel_agents: 1
+
+models:
+  strong: ""
+  balanced: ""
+  fast: ""
+
+update_check:
+  enabled: true
+  remote_url: ""

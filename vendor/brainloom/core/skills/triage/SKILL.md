@@ -5,7 +5,16 @@ description: Classify an incoming task by impact radius before touching code and
 
 # Triage
 
-Every task starts here. Classify first, then route. Never skip, never code first.
+Every non-refined task starts here. Classify first, then route. Never skip, never code first.
+
+## 0. Fast-Path gate (before any read)
+One deterministic check, zero file reads: the task is **refined** when it
+names its exact target (file(s), symbol, or pattern), states the expected
+behavior, and touches no shared contract. Refined → route straight to
+`small-change` Fast-Path mode: no index read, no classification, no
+blocking questions — only the close step (`memory-update`) still runs,
+acting as telemetry behind a transparent gateway. Any doubt → not
+refined, continue below.
 
 ## 1. Load context (cheap reads only)
 1. Read `brain/index.md`.
@@ -48,5 +57,25 @@ While implementing ANY class: if the diff exceeds `limits.max_diff_lines`
 (default 300) or `limits.max_files` (default 8) from `brain/config.yaml` →
 STOP, report, propose a split into smaller tasks. Do not continue by inertia.
 
+## 7. Routing to agents (levels from `models` in brain/config.yaml — never hardcode a model)
+- Ambiguous classification, or the task smells L → consult `brainloom/planner`
+  (level `strong`) with the task and node links.
+- Classifying against large/unfamiliar code → `brainloom/scout` (level `fast`)
+  for a dense pointer summary before deciding.
+- Spawn sequentially unless `max_parallel_agents` (default 1) says otherwise.
+
 ## No brain?
 If `brain/` does not exist in the project, offer to run `init-brain` first.
+
+## Verification
+Fixture: tests/fixtures/sample-project
+Task: Bug — greet() prints (hello, undefined) when called without a name; make it default to (world). Apply triage classification and node creation only — do not edit code.
+- [ ] Classifies as FIX/S: local cause, no contract touched, 0-1 nodes affected
+- [ ] Creates node N-0004 with size: S and status: planned, acceptance_criteria filled BEFORE any code edit
+- [ ] Registers the node in brain/index.md
+
+expect: file brain/nodes/N-0004.md
+expect: grep brain/nodes/N-0004.md "size: S"
+expect: grep brain/nodes/N-0004.md "status: planned"
+expect: grep brain/nodes/N-0004.md "acceptance_criteria"
+expect: grep brain/index.md "N-0004"

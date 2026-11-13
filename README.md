@@ -62,7 +62,7 @@ Eso carga la skill `software-factory` y arranca la corrida completa en el direct
 La fábrica entonces:
 
 1. Registra el intake (incluye stack: sugerido → el Tech Lead evalúa y puede contraproponer; impuesto → se cumple).
-2. Si no hay `brain/`, inicializa brainloom.
+2. Sin `brain/`: proyecto con código existente → `adopt` (mapea lo real); proyecto verde → `init-brain`.
 3. PO → spec + backlog (corte MVP ≤ 4 historias) + roadmap V0/V1/V2.
 4. Tech Lead → plan técnico, ADRs, NFRs medibles, sprints.
 5. Devs → slices con AC primero, tests, verificación corrida con evidencia. **Anti-bloqueo**: 3 intentos → escalado al Tech Lead → workaround → ADR + aprendizaje.

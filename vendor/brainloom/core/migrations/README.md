@@ -18,4 +18,4 @@ skills, agents, or commands need NO migration and NO schema bump.
    brain, and rolls back on any failure. Your script must **throw** on failure —
    partial writes are restored by the runner.
 5. Bump `schema_version` expectations and add the `[BREAKING]` changelog entry
-   in the same change (see CONTRIBUTING).
+   in the same change (rules above).

@@ -1,0 +1,10 @@
+{
+  "name": "empty-project-fixture",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Fixture for the init-brain skill contract: no brain yet, commands discoverable from package.json.",
+  "scripts": {
+    "test": "node --test",
+    "run": "node src/index.js"
+  }
+}

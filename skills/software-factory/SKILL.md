@@ -18,7 +18,7 @@ El usuario es el **NEGOCIO**. Vos sos la **FÁBRICA**: PO, Tech Lead, Devs y QA 
 
 ## Fase 0 — Intake
 1. Registrá el requerimiento del Negocio en `factory/intake.md`: objetivo, usuarios, definición de éxito, **stack** (¿sugerido u obligatorio?), constraints, fecha.
-2. Si el proyecto no tiene `brain/` → cargá la skill `init-brain` y ejecutala primero.
+2. Sin `brain/`: proyecto con código existente → skill `adopt` (mapea lo real, área por área); proyecto verde → skill `init-brain`.
 3. Creá `factory/`.
 4. **Abrí la oficina YA**: generá `factory/office.html` y `factory/dashboard.html` (estado inicial: intake registrado, PO por arrancar, planning "— pendiente —") y mostralas al Negocio con browser.preview. La oficina se re-genera y se re-abre tras CADA evento de la corrida (fin de fase, slice, ronda de QA, gate): el Negocio mira el trabajo en curso mientras la fábrica labura.
 
@@ -31,7 +31,7 @@ Identificá el dominio del requerimiento (o su ausencia). Después:
 Al llegar a SHIP con una división sintetizada que rindió: proponé en la gate promoverla al kit (`divisions/`) — la fábrica aprende dominios.
 
 ## Fase 1 — PO (subagent `factory/po`)
-Pasale intake + contexto (y el playbook de la división si hay). PO produce `factory/spec.md`, `factory/backlog.md` (corte MVP ≤ 4 historias), `factory/roadmap.md` (V0/V1/V2), artefactos de dominio del playbook (ej: GDD-lite en GameDev) y nodos brain `N-XXXX` planned con AC.
+Pasale intake + contexto (y el playbook de la división si hay). PO produce `factory/spec.md`, `factory/backlog.md` (corte MVP ≤ 4 historias), `factory/roadmap.md` (V0/V1/V2), artefactos de dominio del playbook (ej: GDD-lite en GameDev) y nodos brain `N-XXXX` planned con AC. Antes del plan: las AC del backlog pasan por un `brainloom/refuter` fresh-eyes (cost-gated — solo si el MVP toca contratos compartidos o riesgo alto; slices chicos lo saltan); el PO integra lo que sobrevive.
 
 ## Fase 1.5 — UX (subagent `factory/ux`) — SOLO si el producto tiene interfaz
 User flows + wireframes low-fi + AC de usabilidad/accesibilidad que se agregan a los nodos. Producto sin UI (API/CLI/lib) → saltás esta fase.
@@ -43,10 +43,10 @@ Stack: impuesto → se cumple (ADR); sugerido → evalúa, puede contraproponer 
 Consolida backlog + plan en `factory/sprints.md` (board vivo: sprints, nodos por estado, próximos slices, backlog restante). Es la fuente de la vista de planning de la oficina. Regenerá vistas y reabrí.
 
 ## Fase 3 — Build (subagents `factory/dev` secuencial + `factory/designer` en slices con UI)
-Un slice por vez. Dev: AC primero → implementación mínima → tests → verificación real con evidencia → nodo actualizado. **Slice con interfaz**: la diseñadora arma/revisa la capa visual con su design system (`factory/design-system.md`) — entra antes o junto al dev, y sus estados y accesibilidad son parte de las AC. Anti-bloqueo en `references/workflow.md`. Al cerrar cada slice: actualizá los chips de nodo en `sprints.md` desde el brain (mecánico, no requiere SM), regenerá y reabrí las vistas.
+Un slice por vez — el loop del dev ES la skill `build-slice` de brainloom (AC primero, thin, verificado). Dev: AC primero → implementación mínima → tests → verificación real con evidencia → nodo actualizado. **Slice con interfaz**: la diseñadora arma/revisa la capa visual con su design system (`factory/design-system.md`) — entra antes o junto al dev, y sus estados y accesibilidad son parte de las AC. Anti-bloqueo en `references/workflow.md`. Al cerrar cada slice: actualizá los chips de nodo en `sprints.md` desde el brain (mecánico, no requiere SM), regenerá y reabrí las vistas.
 
 ## Fase 4 — QA (subagent `factory/qa`)
-Adversarial: suite completa, bordes, checklist `references/security.md`, DoD vendible. Produce `factory/qa-report.md` con veredicto **SHIP / NO-SHIP**. Hallazgos críticos → dev loop (máx 2 rondas; si persiste, va a la review como riesgo explícito).
+Adversarial con la skill `verify` de brainloom: auditoría de AC, **property-based + fuzzing** en las fronteras, suite completa, checklist `references/security.md`, DoD vendible. Produce `factory/qa-report.md` con veredicto **SHIP / NO-SHIP**. Hallazgos críticos → dev loop (máx 2 rondas; si persiste, va a la review como riesgo explícito).
 
 ## Fase 5 — Dashboard + Oficina
 Regenerá `factory/dashboard.html` y `factory/office.html` desde `templates/dashboard.html` y `templates/office.html` reemplazando los marcadores según `references/dashboard.md` (reglas de genericidad y regeneración bajo demanda: ahí). Mostrale ambas al Negocio (browser.preview o abrí los archivos). También se regeneran cuando el Negocio pide estado sin nuevo requerimiento (`/factory` sin argumentos).
@@ -54,6 +54,7 @@ Regenerá `factory/dashboard.html` y `factory/office.html` desde `templates/dash
 **Regla de apertura en vivo**: en cuanto la fábrica arranca (Fase 0) la oficina se abre en el panel de Review, y se re-genera + re-abre tras CADA evento: PO entregó, TL entregó, SM armó board, dev verificó slice, QA reportó, gate abierta. El Negocio nunca tiene que pedir ver: ya está viendo.
 
 ## Fase 6 — Review Gate — STOP
+Antes de armar la agenda: pasá `reconcile` — el brain contra el código real (punteros stale, estados que mienten). El board que ve el Negocio no puede mentir.
 Pedile al Scrum Master (subagent `factory/scrum-master`) la agenda de la gate: qué se decide, con qué info, recomendación por ítem. Presentale al Negocio, compacto y accionable:
 1. **MVP**: qué hace + comandos exactos para correrlo y probarlo él mismo.
 2. **Verificación**: tests corridos, resultados, evidencia.

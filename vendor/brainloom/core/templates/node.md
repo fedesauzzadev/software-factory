@@ -15,6 +15,7 @@ decisions: []        # decision ids (see decisions/)
 acceptance_criteria: []  # written BEFORE coding; observable behavior, not implementation
 verify: []          # exact command sequence to re-verify this node's contract; write it on FIRST verification of the area
 verification:
+  level: ""          # smoke | full — declared depth. full = tests + functional run (product code); smoke = structure validated, behavior spot-checked (orchestration/spec deltas only)
   tests: ""          # what test commands ran and result
   functional: ""     # what was actually executed and result
   evidence: ""       # path under evidence/

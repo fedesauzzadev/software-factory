@@ -62,7 +62,7 @@ export async function checkUpdate({ force = false } = {}) {
       breaking = start >= 0 && log.slice(start, end > start ? end : undefined).includes("BREAKING");
     } catch { /* changelog optional */ }
     const update = cmp(remote, local) > 0;
-    state = { ts: Date.now(), update, line: `${local.join(".")} -> ${remote.join(".")}${breaking ? " [BREAKING]" : ""}`, breaking };
+    state = { ts: Date.now(), update, local: local.join("."), remote: remote.join("."), line: `${local.join(".")} -> ${remote.join(".")}${breaking ? " [BREAKING]" : ""}`, breaking };
   } catch {
     return readJson(cachePath); // offline: fall back to the last known state, else null
   }

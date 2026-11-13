@@ -2,6 +2,17 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/) · Versionado: [semver](https://semver.org/).
 
+## [0.5.0] — 2026-11-12
+
+### Changed
+- **Upgrade sedoso de brainloom**: los instaladores comparan la versión instalada (`brainloom.kit.json`) con la vendida — más vieja → actualizan solos con `--force` (el installer poda los archivos que la nueva versión ya no incluye); más nueva → no tocan nada; igual → idempotente. Un archivo del kit editado localmente sigue reportándose como colisión: nunca se pisa en silencio.
+- **brainloom vendido 0.3.0 → 0.8.0** (`vendor/brainloom/`, MIT): incluye las 6 skills nuevas (`adopt`, `build-slice`, `plan-project`, `reconcile`, `small-change`, `verify` — esta última con testing adversarial property-based + fuzzing), los 4 agents `brainloom/*` (planner, refuter, scout, verifier), los 8 comandos (`/adopt`, `/build-slice`, `/fix`, `/init-brain`, `/plan-project`, `/reconcile`, `/triage`, `/verify`), `scripts/smoke.mjs`, fixtures nuevos y el AGENTS template con model routing. Se excluye `brain/` del kit upstream (memoria propia de ese repo, no distribuible). Instaladores sin cambios: `install.mjs --config-dir` sigue siendo la interfaz.
+- `validate-kit.mjs` y `verify-install.mjs` ahora cubren el layout 0.8.0 (skills/agents/comandos nuevos), no solo el de 0.3.0.
+
+### Added
+- **La fábrica usa las capacidades nuevas de brainloom** (antes solo las vendía): Fase 0 con `adopt` para proyectos con código existente; AC del PO atacadas por `brainloom/refuter` fresh-eyes (cost-gated) antes del plan; Fase 3 = loop `build-slice`; QA con skill `verify` (property-based + fuzzing + `brainloom/verifier` que intenta refutar); `reconcile` antes de cada review gate; Fast-Path para deltas refinados y `small-change` para FIX/S en la iteración; `verification.level` (full/smoke) en dev y QA.
+- **Guard anti-huérfanos** en `validate-kit.mjs`: si un update del vendor quita una skill que la fábrica referencia, la validación falla y obliga a adaptar o migrar — nada queda huérfano en silencio.
+
 ## [0.4.0] — 2026-11-11
 
 ### Changed

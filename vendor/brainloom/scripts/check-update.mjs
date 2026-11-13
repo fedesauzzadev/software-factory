@@ -58,10 +58,13 @@ async function remoteState(kit, localVersion) {
 
 function report(s) {
   if (s.update) {
-    console.log(`brainloom: ${s.local ?? "?"} -> ${s.remote} available${s.breaking ? " [BREAKING]" : ""}. Update with the kit-update skill (/kit-update).`);
+    // cache entries written by the notice plugin carry `line` but no local/remote
+    const fromTo = s.local ? `${s.local} -> ${s.remote}` : (s.line ?? "?").replace(" [BREAKING]", "");
+    console.log(`brainloom: ${fromTo} available${s.breaking ? " [BREAKING]" : ""}. Update with the kit-update skill (/kit-update).`);
     process.exit(1);
   }
-  console.log(`brainloom: up to date (${s.local ?? s.remote ?? "?"})`);
+  const v = s.local ?? s.line?.split(" -> ")[0] ?? s.remote ?? "?";
+  console.log(`brainloom: up to date (${v})`);
   process.exit(0);
 }
 

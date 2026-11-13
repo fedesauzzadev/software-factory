@@ -10,6 +10,9 @@ Never automatic: every state-changing step needs explicit user confirmation.
 ## 1. Check
 - Kit location: manifest `~/.config/opencode/brainloom.kit.json` → `kit_path`
   (ask the user if absent).
+- Manifest says `source: snapshot` (bootstrap install, no git clone)? The kit
+  cannot be git-pulled. Say so, offer to install from a clone (or `--kit
+  <path>`), and stop after showing the changelog if none is available.
 - Run `node <kit>/scripts/check-update.mjs --force`.
 - No update → say so and stop.
 - Project opted out of notices (`update_check.enabled: false` in
@@ -38,3 +41,12 @@ For this project (plus any others the user lists):
 
 ## 5. Report
 Versions before/after, migrations applied, files reinstalled, anything skipped.
+
+## Verification
+Fixture: tests/fixtures/sample-project
+Manual drill (no Task line — agent mode skips it): the CI migration dry-run
+step exercises migrate on this fixture; the update path is drilled against a
+scratch clone + bare remote before any release that touches check-update,
+install, or this skill (see the 0.2.0 drill in CHANGELOG.md).
+- [ ] `node scripts/migrate.mjs tests/fixtures/sample-project/brain --migrations-dir tests/fixtures/migrations` plans cleanly
+- [ ] `node scripts/smoke.mjs` structural pass

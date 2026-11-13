@@ -103,7 +103,14 @@ export function validateBrain(brainDir) {
     }
     if ((status === "verified" || status === "shipped") && list(fm, "verify").length === 0)
       warnings.push(`${id}: status ${status} but verify recipe empty — write the exact command sequence on first verification`);
-    if (ver.evidence && !existsSync(join(brainDir, ver.evidence)))
+    const level = scalar(fm, "level");
+    if (level && !["smoke", "full"].includes(level))
+      errors.push(`${id}: verification.level "${level}" invalid (expected smoke | full)`);
+    if ((status === "verified" || status === "shipped") && !level)
+      warnings.push(`${id}: verification.level missing — declare smoke (orchestration/spec deltas) or full (product code)`);
+    // agents write evidence paths relative to either the brain dir or the
+    // project root; accept both — the file is checked against disk, not form
+    if (ver.evidence && !existsSync(join(brainDir, ver.evidence)) && !existsSync(join(projectRoot, ver.evidence)))
       errors.push(`${id}: evidence "${ver.evidence}" missing`);
     for (const ptr of list(fm, "code")) {
       const file = ptr.split("->")[0].trim();

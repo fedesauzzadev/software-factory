@@ -21,10 +21,15 @@ const factoryFiles = [
   "agents/factory/scrum-master.md", "agents/factory/designer.md",
   "agents/factory/dev.md", "agents/factory/qa.md", "agents/factory/artist.md",
 ];
+// Layout instalado por brainloom 0.8.0
 const brainloomFiles = [
-  "skills/init-brain/SKILL.md", "skills/triage/SKILL.md",
-  "skills/memory-update/SKILL.md", "skills/kit-update/SKILL.md",
-  "commands/kit-update.md",
+  ...["adopt", "build-slice", "init-brain", "kit-update", "memory-update",
+     "plan-project", "reconcile", "small-change", "triage", "verify"]
+    .map(s => `skills/${s}/SKILL.md`),
+  ...["adopt", "build-slice", "fix", "init-brain", "kit-update",
+     "plan-project", "reconcile", "triage", "verify"].map(c => `commands/${c}.md`),
+  "agents/brainloom/planner.md", "agents/brainloom/refuter.md",
+  "agents/brainloom/scout.md", "agents/brainloom/verifier.md",
   "plugins/brainloom/index.js", "plugins/brainloom/lib.js",
   "brainloom.kit.json",
 ];

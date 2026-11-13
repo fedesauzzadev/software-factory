@@ -49,5 +49,5 @@ Al cerrar un proyecto: retro breve. Aprendizajes genéricos (no específicos del
 
 ## Iteración entre sprints
 1. Approval del Negocio → siguiente slice del plan (Fase 3) o siguiente entrega del roadmap.
-2. Antes de cada slice: `triage` (FIX/S, M, L) del delta — respeta las clases brainloom.
+2. Antes de cada slice: delta **refinado** (nombra archivo/s exacto + comportamiento esperado, sin contratos shared) → **Fast-Path** brainloom (sin triage, sin index, solo los archivos nombrados, cierre con `memory-update` size S); el resto → `triage` del delta (respeta las clases brainloom): FIX/S corre la skill `small-change`; M/L van al orquestador.
 3. Después de cada slice: `memory-update` + dashboard + (si toca valor) mini-review con el Negocio.

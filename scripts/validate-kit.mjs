@@ -24,15 +24,19 @@ const required = [
 ];
 const agents = ["po", "tech-lead", "ux", "scrum-master", "designer", "dev", "qa", "artist"];
 required.push(...agents.map(a => `agents/factory/${a}.md`));
-// brainloom vendored (memoria de la fábrica)
+// brainloom vendored (memoria de la fábrica) — layout 0.8.0
 required.push(
   "vendor/brainloom/VERSION", "vendor/brainloom/LICENSE",
   "vendor/brainloom/adapters/opencode/install.mjs",
   "vendor/brainloom/scripts/validate-brain.mjs",
-  "vendor/brainloom/core/skills/init-brain/SKILL.md",
-  "vendor/brainloom/core/skills/triage/SKILL.md",
-  "vendor/brainloom/core/skills/memory-update/SKILL.md",
-  "vendor/brainloom/core/skills/kit-update/SKILL.md",
+  "vendor/brainloom/scripts/smoke.mjs",
+  "vendor/brainloom/adapters/opencode/agents/brainloom/planner.md",
+  "vendor/brainloom/adapters/opencode/agents/brainloom/refuter.md",
+  "vendor/brainloom/adapters/opencode/agents/brainloom/scout.md",
+  "vendor/brainloom/adapters/opencode/agents/brainloom/verifier.md",
+  ...["adopt", "build-slice", "init-brain", "kit-update", "memory-update",
+     "plan-project", "reconcile", "small-change", "triage", "verify"]
+    .map(s => `vendor/brainloom/core/skills/${s}/SKILL.md`),
 );
 
 console.log("Archivos requeridos:");
@@ -85,7 +89,30 @@ console.log("Comando:");
 const cmd = readFileSync(join(root, "commands/factory.md"), "utf8");
 cmd.includes("$ARGUMENTS") ? ok("/factory usa $ARGUMENTS") : bad("commands/factory.md sin $ARGUMENTS");
 
-// 6. Versionado
+// 6. Anti-huérfanos: cada skill brainloom que la fábrica referencia debe existir en el vendor.
+// Si un update del kit la quita, este check falla y obliga a adaptar o migrar la referencia.
+console.log("Skills brainloom referenciadas (anti-huérfanos):");
+const factoryDocs = [
+  "skills/software-factory/SKILL.md",
+  "skills/software-factory/references/workflow.md",
+  ...agents.map(a => `agents/factory/${a}.md`),
+];
+const docsText = factoryDocs.map(f => readFileSync(join(root, f), "utf8")).join("\n");
+const brainloomSkills = readdirSync(join(root, "vendor/brainloom/core/skills"));
+for (const s of brainloomSkills) {
+  if (!docsText.includes(`\`${s}\``)) continue; // no referenciada: basta el check de presencia del punto 1
+  existsSync(join(root, "vendor/brainloom/core/skills", s, "SKILL.md"))
+    ? ok(`\`${s}\` referenciada y presente en el vendor`)
+    : bad(`HUÉRFANA: la fábrica referencia \`${s}\` pero el vendor no la trae — adaptá o migrá`);
+}
+// Referencias a skills que el vendor YA no tiene: buscar nombres backtick-eados conocidos
+const knownSkillNames = ["adopt", "build-slice", "init-brain", "kit-update", "memory-update", "plan-project", "reconcile", "small-change", "triage", "verify"];
+for (const s of knownSkillNames) {
+  if (brainloomSkills.includes(s)) continue;
+  docsText.includes(`\`${s}\``) && bad(`HUÉRFANA: \`${s}\` referenciada pero ausente del vendor (el kit la quitó)`);
+}
+
+// 7. Versionado
 console.log("Versionado:");
 const v = readFileSync(join(root, "VERSION"), "utf8").trim();
 /^\d+\.\d+\.\d+$/.test(v) ? ok(`VERSION ${v} semver`) : bad(`VERSION inválida: '${v}'`);

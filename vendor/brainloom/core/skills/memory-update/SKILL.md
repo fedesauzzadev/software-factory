@@ -16,6 +16,11 @@ is the closing step of any task. No node update → not done.
     (command + result + evidence path) in the same edit. Blocked from verifying
     locally? Stay `implemented` and note the blocker — commit/deploy gates
     `shipped`, never verification.
+  - Declare depth in the same edit — `verification.level`:
+    `full` = tests + functional run (the default for product code);
+    `smoke` = structure validated, behavior spot-checked (ONLY for
+    orchestration/spec deltas with no runtime behavior of their own).
+    Reviewers read this field first; undeclared depth reads as unverified.
   - `shipped`: human gates passed (commit, deploy, merge). Ask once, record the
     answer in decisions, stop clean. No limbo.
   - `superseded` when replaced (keep the link).
@@ -53,3 +58,15 @@ get recorded, not asked.
 ## 7. Keep it light
 Any file past its budget (node body >40 lines, index >150 lines)? Split or
 summarize it now. The brain stays a map, not a transcript.
+
+## Verification
+Fixture: tests/fixtures/sample-project
+Task: Node N-0001 (Add greet function) was just implemented and node app.js now runs successfully printing a greeting; run memory-update to close it, writing evidence.
+- [ ] N-0001 climbs planned -> verified in one honest step: verification block filled, level declared, evidence file written
+- [ ] brain/index.md row for N-0001 shows the new status
+
+expect: grep brain/nodes/N-0001.md "status: verified"
+expect: grep brain/nodes/N-0001.md "level: full"
+expect: grep brain/nodes/N-0001.md "evidence: evidence/N-0001.md"
+expect: file brain/evidence/N-0001.md
+expect: grep brain/index.md "feature | S | verified"

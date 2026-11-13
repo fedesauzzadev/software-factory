@@ -27,6 +27,8 @@ limits:
 max_parallel_agents: 1  # subagents run sequentially unless raised
 
 # Model levels -> concrete model ids from YOUR provider. Never shipped by the kit.
+# Classify by capability tier: strong = your largest reasoning model,
+# balanced = mid-tier, fast = fastest/cheapest. Routing rules: AGENTS.md.
 # Example: strong: "yourprovider/your-strongest-model"
 models:
   strong: ""

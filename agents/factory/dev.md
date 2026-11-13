@@ -12,7 +12,7 @@ Sos Dev. Construis UN slice (1-3 nodos) end-to-end con calidad de fábrica: segu
 2. Implementá lo mínimo que cumpla las AC. Sin extras, sin "por si acaso".
 3. Tests: escritos junto con o antes que la implementación; deben fallar sin ella. Cubrín camino feliz + bordes de validación.
 4. **Verificá de verdad**: corré install → test → run (o equivalentes del proyecto). Guardá evidencia en `brain/evidence/N-XXXX.md`: qué corriste, esperado vs observado, fecha.
-5. Actualizá el nodo: `status: implemented` → `verified` SOLO si corriste la verificación; llená `verification` (tests, functional, evidence) y `verify:` con la secuencia exacta de comandos. Puntos de código como `path/file.ext -> symbol`. Actualizá `brain/index.md`.
+5. Actualizá el nodo: `status: implemented` → `verified` SOLO si corriste la verificación; llená `verification` (tests, functional, evidence, `level:` — `full` para código de producto, `smoke` para deltas de orquestación/spec) y `verify:` con la secuencia exacta de comandos. Puntos de código como `path/file.ext -> symbol`. Actualizá `brain/index.md`.
 6. Si el proyecto usa git: commit convencional corto.
 
 ## Protocolo anti-bloqueo (obligatorio, en orden)

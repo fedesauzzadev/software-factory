@@ -31,11 +31,22 @@ $cmdsDir = Join-Path $Target "commands"
 New-Item -ItemType Directory -Force $cmdsDir | Out-Null
 Copy-Item -Force (Join-Path $src "commands\factory.md") $cmdsDir
 
-# brainloom (vendored) - memoria de la fabrica
+# brainloom (vendored) - memoria de la fabrica. Upgrade solo hacia adelante:
+# actualiza si la vendida es mas nueva; nunca pisa una instalada mas nueva.
 $blInstaller = Join-Path $src "vendor\brainloom\adapters\opencode\install.mjs"
 if (Get-Command node -ErrorAction SilentlyContinue) {
-  node $blInstaller --config-dir $Target
-  if ($LASTEXITCODE -ne 0) { Write-Host "NOTA: brainloom reporto colisiones (hay una version distinta instalada). No se sobreescribio nada; se usa la existente." }
+  $vendored = (Get-Content (Join-Path $src "vendor\brainloom\VERSION") -Raw).Trim()
+  $manifest = Join-Path $Target "brainloom.kit.json"
+  $vNew = [version]$vendored; $vOld = $null
+  if (Test-Path $manifest) { try { $vOld = [version]((Get-Content $manifest -Raw | ConvertFrom-Json).kit_version) } catch {} }
+  if ($vOld -and $vOld -gt $vNew) {
+    Write-Host "brainloom instalada ($vOld) es mas nueva que la vendida ($vendored); se conserva la tuya."
+  } else {
+    $blArgs = @("--config-dir", $Target)
+    if ($vOld -and $vOld -lt $vNew) { $blArgs += "--force"; Write-Host "Actualizando brainloom $vOld -> $vendored" }
+    node $blInstaller @blArgs
+    if ($LASTEXITCODE -ne 0) { Write-Host "NOTA: brainloom reporto colisiones (archivos locales modificados). No se sobreescribio nada; node $blInstaller --force si queres pisarlos." }
+  }
 } else {
   Write-Host "AVISO: node no esta en PATH - brainloom (memoria de la fabrica) NO se instalo. Instalalo y re-ejecuta."
 }
